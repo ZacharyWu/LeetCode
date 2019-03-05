@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int ans, cnt, un = 0;
+        string s1, s2;
+        if (s.size() == 0){
+            ans = 0;
+        }
+        if (s.size() == 1){
+            ans = 1;
+        }
+        if (s.size() > 1){
+            s1 = s.substr(0,1);
+            s2 = s.substr(1,s.size()-1);
+            while(s2.size() >= 1  ){
+                for (int n = 0; n < s1.size(); ++n){
+                    if (s2.at(0) == s1.at(n)){
+                        cnt = s1.size();
+                        s1 = s1.substr(1,s1.size()-1);
+                        break;
+                    }
+                }
+                un = 0;
+                for (int n = 0; n < s1.size(); ++n){
+                    if (s2.at(0) != s1.at(n)){
+                        un++;
+                    }
+                }
+                if(un == s1.size()){
+                    s1 = s1 + s2.at(0);
+                    s2 = s2.substr(1,s2.size()-1);
+                    cnt = s1.size();
+                }
+                if (ans < cnt)
+                    ans = cnt;
+            }  
+        }
+        return ans;
+    }
+};
