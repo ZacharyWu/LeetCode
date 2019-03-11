@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if (numRows == 1) {
+            return s;
+        }
+        string output;
+        int len = s.size();
+        int loopLen = 2 * numRows - 2;
+        for (int i = 0; i < numRows; ++i) {
+            //output = s.at(0) + s.at(2 * numRows - 2);
+            //output = s.at(0) + s.at(2 * numRows - 2 - i);
+            for (int j = 0; j + i < len; j += loopLen) {
+                output += s[i + j];
+                if (i != 0 && i != numRows - 1 && j + loopLen - i < len)
+                    output += s[j + loopLen - i];   
+            }
+        }  
+        return output;
+    }
+};
