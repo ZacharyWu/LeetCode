@@ -1,0 +1,52 @@
+class LRUCache {
+public:
+    LRUCache(int capacity) {
+        capacity_ = capacity;
+    }
+    
+    int get(int key) {
+        
+        const auto it = m_.find(key);
+        
+        //If key does not exist
+        if (it == m_.cend()) return -1;
+        
+        //else key exist: Move it to the front of the list
+        cache_.splice(cache_.begin(), cache_, it->second); //it->second node
+        return it->second->second; //it->second node(key), it->second->second value
+        
+    }
+    
+    void put(int key, int value) {
+        const auto it = m_.find(key);
+        
+        //if key exist: Update amd Move it to the front
+        if (it != m_.cend()){
+            //update value 
+            it->second->second = value;
+            //move key to the front of the list
+            cache_.splice(cache_.begin(), cache_, it->second);
+            return;
+        }
+        
+        //key does not exist
+        
+        //if reached the capacity, remove the oldest element/node
+        if (cache_.size() == capacity_){
+            const auto& node = cache_.back();
+            m_.erase(node.first);
+            cache_.pop_back();
+        }
+        
+        //Insert the new element to the front of the list
+        cache_.emplace_front(key, value);//create a node
+        m_[key] = cache_.begin();//mapping key to the begining of the list
+
+    }
+    
+private:
+    int capacity_;
+    list<pair<int,int>> cache_;
+    unordered_map<int,list<pair<int,int>>::iterator> m_;
+    
+};
