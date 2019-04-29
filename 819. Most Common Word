@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string mostCommonWord(string p, vector<string>& banned) {
+        unordered_set<string> ban(banned.begin(), banned.end());
+        unordered_map<string, int> count;
+        for (auto & c: p) {
+            c = isalpha(c) ? tolower(c) : ' '; //clear and covert text to lower case
+            // cout << c << endl;
+        }
+        //cout << ban.size() << endl;
+        istringstream iss(p);
+        string word;
+        pair<string, int> res ("", 0); //define result pair
+        
+        while (iss >> word){
+            if (ban.find(word) == ban.end()){
+                //cout << word << " is not found in ban" <<endl;
+                if (++count[word] > res.second){
+                    res = make_pair(word, count[word]);//update result
+                }
+            }
+        }  
+        return res.first;
+    }
+};
