@@ -1,0 +1,49 @@
+class MedianFinder {
+public:
+    /** initialize your data structure here. */
+    MedianFinder(): l_(m_.cend()), r_(m_.cend()) {
+        
+    }
+    
+    void addNum(int num) {
+        if (m_.empty()) {
+            l_ = r_ = m_.insert(num);
+            return;
+        }
+        
+        m_.insert(num);
+        const size_t n = m_.size();
+        
+        if (n & 1) {
+            cout << n << endl;
+            //odd number 
+            if (num >= *r_) {
+                l_ = r_;
+            } else {
+                l_ = --r_;
+            }
+        } else {//odd number
+            if (num >= *r_) {
+                ++r_;
+            } else {
+                --l_;
+            } 
+        }    
+    }
+    
+    double findMedian() {
+        return (static_cast<double>(*l_) + *r_) / 2;
+    }
+    
+private:
+    multiset<int> m_;
+    multiset<int>::const_iterator l_;
+    multiset<int>::const_iterator r_;
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
