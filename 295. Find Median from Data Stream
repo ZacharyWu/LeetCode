@@ -14,8 +14,7 @@ public:
         m_.insert(num);
         const size_t n = m_.size();
         
-        if (n & 1) {
-            cout << n << endl;
+        if (n & 1) { //if(n%2==1)
             //odd number 
             if (num >= *r_) {
                 l_ = r_;
