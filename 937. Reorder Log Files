@@ -1,0 +1,55 @@
+class Solution {
+public:
+    vector<string> reorderLogFiles(vector<string>& logs) {
+        unordered_map<int, string> letterLogs;
+        unordered_map<int, string> digitLogs;
+        vector<string> results;
+        
+        //partition
+        int l = 0;
+        int d = 0;
+        for (int i = 0; i< logs.size(); ++i) {
+            istringstream iss(logs[i]);
+            string word;
+            int n = 0;
+            while (iss >> word) {
+                if (n == 1) {
+                    if (isalpha(word[0])) letterLogs.insert({l++,logs[i]});//save to digitLogs
+                    if (isdigit(word[0])) digitLogs.insert({d++,logs[i]}); //save to digitLogs
+                }    
+                ++n;
+                if (n > 1) break;
+            }
+        }
+        
+        //sort letterLogs
+        for (int i = 0; i < letterLogs.size()-1; ++i) {
+            for (int j = 1+i; j < letterLogs.size(); ++j) {
+                //cout << letterLogs[i] << " VS " << letterLogs[j] <<endl;
+                if (compareStr(letterLogs[i], letterLogs[j]) == true) { //swap letterLogs[i] and letterLogs [j]
+                    string tmp;
+                    tmp = letterLogs[i];
+                    letterLogs[i] = letterLogs[j];
+                    letterLogs[j] = tmp;
+                }
+            }
+        }
+        
+        // result = letterLogs + digitalLogs
+        for (int i = 0; i < letterLogs.size(); ++i) results.push_back(letterLogs[i]);
+        for (int i = 0; i < digitLogs.size(); ++i) results.push_back(digitLogs[i]);
+        return results;
+    }
+    
+    //compare String
+    bool compareStr(string str1, string str2) {
+        int strat1 = str1.find(" ");
+        string substr1 = str1.substr(strat1+1);
+        int strat2 = str2.find(" ");
+        string substr2 = str2.substr(strat2+1);
+        int k = 0;
+        while(substr1[k] == substr2[k]) k++;
+        if (substr1[k] > substr2[k]) return true;
+        else return false; 
+    }
+};
